@@ -1,5 +1,6 @@
 package br.edu.ifsuldeminas.mch.todolist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import br.edu.ifsuldeminas.mch.todolist.domain.Task;
 public class FormActivity extends AppCompatActivity {
 
     private TextInputEditText description;
+    private Task task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,16 @@ public class FormActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         description = findViewById(R.id.task_description);
+
+        // Recuperar a chamadora
+        Intent intent = getIntent();
+        // Pegar a task
+         task = (Task) intent.getSerializableExtra("task-to-edit");//criar uma constante task-to-edit
+        // Colocar a descrição no Edit Text
+        if (task!= null) {
+            description.setText(task.getDescription());
+        }
+
     }
 
     @Override
@@ -42,17 +54,21 @@ public class FormActivity extends AppCompatActivity {
 
         String desc = description.getText().toString();
 
-        if(desc.equals("")) {
+        if (desc.equals("")) {
             Toast.makeText(FormActivity.this, "Descrição nao pode ser vazia", Toast.LENGTH_SHORT).show();
             return super.onOptionsItemSelected(item);
         } else {
-            Task task = new Task (null, desc, true);
             TaskDAO dao = new TaskDAO(FormActivity.this);
-            dao.save(task);
+
+            if (task == null) {
+                task = new Task(null, desc, true);
+                dao.save(task);
+            } else {
+                task.setDescription(desc);
+                dao.update(task);
+            }
             finish();
+
+            return super.onOptionsItemSelected(item);
         }
-
-
-        return super.onOptionsItemSelected(item);
-    }
-}
+    }}

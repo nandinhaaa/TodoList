@@ -11,7 +11,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String DB_NAME= "todoList.db";
     private static final Integer DB_VERSION = 1;
     private static final String CREATE_TABLE =
-            "CREATE TABLE IF NOT EXISTS tasks" +
+            "CREATE TABLE IF NOT EXISTS task" +
                     "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "description text, " +
                     "active varchar(1))";

@@ -1,6 +1,8 @@
 package br.edu.ifsuldeminas.mch.todolist.domain;
 
-public class Task {
+import java.io.Serializable;
+
+public class Task implements Serializable {
     private Integer id;
     private String description;
     private Boolean active;
@@ -33,5 +35,18 @@ public class Task {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    private String getActiveString(){
+
+        String result = active ? "Ativa" : "Realizada";
+
+        return result;
+    }
+
+    @Override
+    public String toString(){
+        String formatted = String.format("%s - %s", this.getDescription(), this.getActiveString());
+        return formatted;
     }
 }
